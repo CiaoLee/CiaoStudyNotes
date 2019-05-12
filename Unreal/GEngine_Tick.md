@@ -54,14 +54,62 @@ void UGameEngine::Tick(float DeltaSeconds,bool bIdleMode)
 }
 ```
 
-- void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
+- bool UEngine::LoadMap(FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error);
+
+```C++
+bool UEngine::LoadMap(FWorldContext& WorldContext,FURL URL, class UPendingNetGame* Pending, FString& Error)
 {
+    //Upload the current world
+    if(WorldContext.World())
+    {
+
+        //trim memory to clear up allocations from the previous level(also flushes rendering)
+
+        //Cancels the Forced StreamType for textures using a timer.
+        if(!IStreamingManager::HasShutdown())
+        {
+            IStreamingManager::Get().CancelForcedResources();
+        }
+
+
+
+        
+    }
+    
+    //......................
+
+    //Preload Content for URL.
+    WorldContext.OwningGameInstance->PreloadContentForURL(URL);
+    UPackage* WorldPackage = NULL;
+    UWorld* NewWorld = NULL;
+
+    //NormalMapLoading....
+    
+    NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
+
+    GWorld = NewWorld;
+
+    WorldContext.SetCurrentWorld(NewWorld);
+    WorldContext.World()->WorldType = WorldContext.WorldType.
+
+    //InitWorld Call.
+    
+}
+
+```
+
+- void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
+
+```C++
+{
+
     //Handle Seamless Traveling
     if(Context.SeamlessTravelHandler.IsInTransition())
     {
         //Note: SeamlessTravelHandler.Tick may automatically update Context.World and GWorld internally.
         Context.SeamlessTravelHandler.Tick();
     }
+
     //Handle server traveling.
     if(Context.World()==nullptr)
     {
@@ -71,7 +119,6 @@ void UGameEngine::Tick(float DeltaSeconds,bool bIdleMode)
 		return;
     }
 
-
     //If has next world switch to next.
     {
         //.....
@@ -79,5 +126,30 @@ void UGameEngine::Tick(float DeltaSeconds,bool bIdleMode)
         //Handle unsuccess.
     }
 
-    //Handle clinet traveling.
+    //Handle client traveling.
+    if(!Context.TravelURL.IsEmpty())
+    {
+        AGamemode* const GameMode = Context.World()->GetAuthGameMode();
+        if(GameMode)
+        {
+            GameMode->StartToLeaveMap();
+        }
+
+        FString Error,TravelURLCopy = Context.TravelURL;
+        if(Browse(Context,FURL(&Context.LastURL,*TravelURLCopy,(ETravelType)Context.TravelType),Error)==EBrowseReturnVal::Failure)
+        {
+            if(Context.World()==NULL)
+            {
+                BrowseToDefaultMap(Context);
+            }
+
+            //Let people know that we failed to client travel
+            BroadcastTravelFailure(Context.World(),ETravelFailure::ClientTravelFailure,Error);
+        }
+
+        check(Context.World() != NULL);
+        return;
+    }
+    return;
 }
+```
