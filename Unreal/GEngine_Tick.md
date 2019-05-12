@@ -93,7 +93,59 @@ bool UEngine::LoadMap(FWorldContext& WorldContext,FURL URL, class UPendingNetGam
     WorldContext.World()->WorldType = WorldContext.WorldType.
 
     //InitWorld Call.
+    if(!WorldContext.World()->bIsWorldInitialized)
+    {
+        WorldContext.World()->InitWorld();
+    }
+
+    //Handle Pending Level.
+    if(Pending)
+    {
+        MovePendingLevel(WorldContext);
+    }
+
+    //Truly create game mode
+    WorldContext.World()->SetGameMode(URL);
+
+    if(Pending==NULL&&(!GIsClient || URL.HasOption(TEXT("Listem"))))
+    {
+        if(!WorldContext.World()->Listen(URL))
+        {
+            UE_LOG(LogNet,Error,TEXT("LoadMap: failed to Listen(%s)"),*URL.ToString());
+        }
+    }
+
+    //Create Ai System
+    WorldContext.World()->CreateAISystem();
+
+    //Initialize gameplay for level
+    //Including calling GameMode initGame;
+    WorldContext.World()->InitializeActorsForPlay(URL);
+
+    //Spawn play actors for all active local players;
+
+    for(auto It = WorldContext.OwningGameInstance->GetLocalPlayerIterator();It;++It)
+    {
+        FString Error2;
+        if(!(*It)->SpawnPlayActors(URL.ToString(1),Error2,WorldContext.World())
+        {
+
+        }
+    }
+
+    //Prime texture streaming.
+    IStreamingManager::Get().NotifyLevelChange();
+
+    //This would call GameMode StartPlay.
+    WorldContext.World()->BeginPlay();
+
+    //send a callback message
     
+    FCoreUObjectDelegates::PostLoadMapWithWorld.Broadcast(WorldContext.World());
+
+    WorldContext.World()->bWorldWasLoadedThisTick = true;
+
+    //End Works;
 }
 
 ```
