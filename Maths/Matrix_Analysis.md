@@ -56,4 +56,21 @@ $$
 
 ### Rank and Eigen
 
+对于 One-off Block Matrix
+
+当 $A$ 与 $D$ 均为非奇异方阵时
+$$
+    \begin{bmatrix}
+        A & B \\
+        0 & D \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        I_m & -A^{-1}B \\
+        0 & I_n\\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    \end{bmatrix}
+$$
+
 #### Sylvester Equation

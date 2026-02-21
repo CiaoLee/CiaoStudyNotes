@@ -15,7 +15,9 @@ $$
 
 #### Wallis Infinite Product 与 $\frac{sinx}{x}$
 
-#### Viete's Infinite Product 与 $sin^nx$ 
+#### Viete's Infinite Product 与 $sin^nx$
+
+
 
 
 这个方法可以推演得到 Viete's Formula
