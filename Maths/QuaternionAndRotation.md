@@ -36,9 +36,9 @@ Quaternion matrix representation
 $$
     M_{\dot{q}} = 
         \begin{bmatrix}
-            1 - q_2^2 - q_3^2 & q_1q_2-q_0q_3 & q_0q_2 + q_1q_3\\
-            q_0q_3 + q_1q_2 & 1 - q_1^2 - q_3^2 & q_2q_3 - q_0q_1 \\
-            q_1q_3 -q_0q_2 & q_0q_1 + q_2q_3 & 1-q_1^2 - q_2^2 \\
+            1 - 2(q_2^2 - q_3^2) & 2(q_1q_2-q_0q_3) & 2(q_0q_2 + q_1q_3)\\
+            2(q_0q_3 + q_1q_2) & 1 - 2(q_1^2 - q_3^2) & 2(q_2q_3 - q_0q_1) \\
+            2(q_1q_3 -q_0q_2) & 2(q_0q_1 + q_2q_3) & 1 - 2(q_1^2 - q_2^2) \\
         \end{bmatrix}
 $$
 
@@ -69,20 +69,58 @@ $$
     \\
     R = R_zR_yR_x=
     \begin{bmatrix}
-        cos{\psi}cos{\theta} & sin{\phi}sin{\theta}cos{\psi} - cos{\phi}sin{\psi}\\
-        sin{\psi}cos{\theta} & cos{\phi}cos{\psi} +sin{\phi}sin{\theta}cos{\phi}\\
-        -sin{\theta} & \\
+        cos{\psi}cos{\theta} & cos{\phi}(-sin{\psi}) + sin{\phi}sin{\theta}cos{\psi} & (-sin{\phi})(-sin{\psi}) + cos{\phi}sin{\theta}cos{\psi}\\
+        sin{\psi}cos{\theta} & cos{\phi}cos{\psi} + sin{\phi}sin{\theta}sin{\psi} & (-sin{\phi})(cos{\psi}) + cos{\phi}sin{\theta}sin{\psi}\\
+        -sin{\theta} & sin{\phi}cos{\theta} & cos{\phi}cos{\theta}\\
     \end{bmatrix}
 $$
 
-### Codes: Calculation from Euler to Quaternion 
+### Unreal Codes: Construction Quaternion
 
 ```C++
+    //Axis need to be the normalize one
+    TQuat(const TVector<T> Aixs,const float AngleRad)
+    {
+        const T HalfA = 0.5f * AngleRad;
+        T S,C;
+        FMath::SinCos(S,C,HalfA);
+        //First represent the Image part of quaternion
+        X = S * Axis.X
+        Y = S * Axis.Y;
+        Z = S * Axis.Z;
+        W = C;
+        //Check for nan XYZW
+    }
+```
+
+### Unreal Codes: Calculation from Euler to Quaternion 
+
+```C++
+    // The key
     
 ```
 
-### Codes: Calculation from Quaternion to Euler
+### Unreal Codes: Calculation from Quaternion to Euler
 
 ```C++
+    FRotator FQuat::Rotator() const
+    {
+        //q_1 * q_3 - q_0 * q_2 // Corresponding to the rotation matrix 0.5f * M31 , 0.5f * -sin{\theta}
+        const float SingularityTestValue =  Z * X - W * Y;
+        //And we use M11, M21 to consider the tan{\psi} of yaw(Axix_Z)
+        //cos{\psi}cos{\theta} 1-2.0f *(q_2*q_2-q_3*q3)
+        const float Yaw1 = 1 - 2 * (Y * Y + Z * Z)
+        //sin{\psi}cos{\theta} 2.0f * (q_0q_3 + q_1q_2)
+        const float Yaw2 = 2.0f * (X * Y + Z * W)
+        //Singularity test threshold 
+
+        const float SingularityTestThreshold = 0.4999995f;
+
+
+    }
+
 
 ```
+
+### Unreal Codes: Spherical Interpolation through Quaternion
+
