@@ -116,6 +116,7 @@ $$
 
         const float SingularityTestThreshold = 0.4999995f;
 
+        //Check for \theta , roll 
 
     }
 

@@ -36,6 +36,38 @@ g(\lambda,v) = \inf_{x\in D}(f_0(x)+\sum_{i=1}^m\lambda_if_i(x) + \sum_{i=1}^pv_
 $$
 
 -  **当该 Lagrangian 在特定 $x$ 下无下界，这个时候该对偶函数值趋近于 $-\infin$.由于该对偶函数是无穷多个逐点下确界，即使，即使原问题不是一个凸函数，该对偶 $g(\lambda,v)$ 函数也是一个凹函数**。
+    
+    若 $f(x)$ 为凹函数则 $f(x)$ 满足 
+    $$
+    f(\theta x + (1-\theta)y) \le \theta f(x) + (1-\theta)f(y) , \theta \in R, 0\le \theta \le 1
+    $$ 
+
+    现尝试证明 
+    $$
+    g(\theta \lambda_0 + (1-\theta)\lambda_1,\theta v_0 + (1-
+    \theta)v_1) \le \theta g(\lambda_0,v_0) + (1-\theta)g(\lambda_1,v_1) 
+    $$
+
+    用集合和集合中最小值展开拉格朗日对偶函数
+    $$
+        g(\lambda,v) =  min \{ L(x_0,\lambda,v), L(x_1,\lambda,v) \cdots L(x_n,\lambda,v)\},n = +\infin
+    $$
+    对于固定 $x = x_n$ 的拉格朗日函数 
+    $$L(x_n,\lambda,v) = f_0(x_n) + \lambda^T f(x_n) + v^Th(x_n)$$
+    是标准的仿射函数，既是凹函数又是凸函数。
+
+    即 
+    $$
+    L(x_n,\theta \lambda_0 + (1 - \theta)\lambda_1, \theta v_0 + (1-\theta)v_1) = \theta L(x_n,\lambda_0,v_0) + (1-\theta)L(x_n,\lambda_1,v_1) \\
+    min\{L_{0 \to 1}\} = min\{\theta L_0 +(1-\theta)L_1\} \ge \theta min \{ L_0 \} + (1-\theta)min \{ L_1 \}
+    $$
+
+    结合在一起比得证，Lagrangian 对偶函数是凹函数，无论原函数是否是凸函数。
+
+
+
+
+    
 
 #### 最优值的下界
 
