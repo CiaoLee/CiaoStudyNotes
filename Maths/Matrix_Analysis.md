@@ -59,6 +59,7 @@ $$
 对于 One-off Block Matrix
 
 当 $A$ 与 $D$ 均为非奇异方阵时
+
 $$
     \begin{bmatrix}
         A & B \\
@@ -85,6 +86,7 @@ $$
 $$
 
 #### Sylvester Equation
+
 
 
 #### 
