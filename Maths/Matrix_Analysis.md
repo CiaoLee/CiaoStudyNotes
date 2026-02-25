@@ -70,11 +70,41 @@ $$
     \end{bmatrix}
     =
     \begin{bmatrix}
+        A & 0 \\
+        0 & D \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        I_m & -BD^{-1} \\
+        0 & I_n \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        A & B \\
+        0 & D \\
     \end{bmatrix}
 $$
 
 #### Sylvester Equation
 
 
-
 #### 
+
+
+#### 分块矩阵的逆
+
+一对矩阵组，$A$,$B$ 
+
+$A$, $B$ 可化为
+$$
+    A = 
+    \begin{bmatrix}
+        A_{11} & A_{12} \\
+        A_{21} & A_{22} \\
+    \end{bmatrix}
+    \\
+    B = 
+    \begin{bmatrix}
+        B_{11} & B_{12} \\
+        B_{21} & B_{22} \\
+    \end{bmatrix}
+$$
