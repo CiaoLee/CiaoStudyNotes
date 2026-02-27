@@ -56,9 +56,9 @@ $$
 
 ### Rank and Eigen
 
-对于 One-off Block Matrix
+对于 One-off Block Matrix  $M$
 
-当 $A$ 与 $D$ 均为非奇异方阵时
+当 $A$ 非奇异,即 $|A| \ne 0$
 
 $$
     \begin{bmatrix}
@@ -76,6 +76,19 @@ $$
     \end{bmatrix}
     =
     \begin{bmatrix}
+        I_m & 0 \\
+        -CA^{-1} & I_n \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        A & 0 \\
+        C & D \\
+    \end{bmatrix}
+$$
+
+当 $D$ 非奇异，即 $|D| \ne 0 $
+
+$$
+    \begin{bmatrix}
         I_m & -BD^{-1} \\
         0 & I_n \\
     \end{bmatrix}
@@ -83,11 +96,106 @@ $$
         A & B \\
         0 & D \\
     \end{bmatrix}
+    =
+    \begin{bmatrix}
+        A & 0 \\
+        0 & D \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        A & 0 \\
+        C & D \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        I_p & 0 \\
+        -CD^{-1} & I_n\\
+    \end{bmatrix}
 $$
 
+即 $rankM = rankA + rankB$
+
+对于 NonSingular off-diagonal block
+
+对于 
+$$
+    Z_1 = 
+    \begin{bmatrix}
+        A & 0 \\
+        B & D \\
+    \end{bmatrix}
+$$
+
+当 $B$ 为非奇异矩阵，这时，(前者看列，后者看行)
+
+$$
+    \begin{bmatrix}
+        0 & I_n \\
+        I_m & -AB^{-1} \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        A & 0 \\
+        B & D \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        I_n & -B^{-1}D \\
+        0 & I_q \\
+    \end{bmatrix}
+        =
+    \begin{bmatrix}
+        B & 0 \\
+        0 & -DB^{-1}A \\
+    \end{bmatrix}
+$$
+
+$$
+    rk(Z_1) = rk(B) + rk(DB^{-1}A)
+$$
+
+对于
+
+$$
+    Z_2 = 
+    \begin{bmatrix}
+        A & C \\
+        0 & D \\
+    \end{bmatrix}
+$$
+
+当 $C$ 为非奇异矩阵,
+
+$$
+    \begin{bmatrix}
+        I_m & 0 \\
+        -DC^{-1} & I_n \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        A & C \\
+        0 & D \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        0 & I_p \\
+        I_m & -C^{-1}A \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        C & 0 \\
+        0 & -DC^{-1}A \\
+    \end{bmatrix}
+$$
+
+$$
+    rk(Z_2) = rk(C) + rk(AC^{-1}D)
+$$
+
+#### Rank Inequalities - 1
+
+
+
+#### Rank Inequalities - 2
+
+
+
 #### Sylvester Equation
-
-
 
 #### 
 
