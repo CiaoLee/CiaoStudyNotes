@@ -44,6 +44,8 @@ class MultiHeadAttention(nn.Module):
     self.h = heads
     self.dropout = nn.Dropout(dropout)
     self.out = nn.Linear(d_model,d_model)
-    
+
+    def attention(q,k,v,d_k,mask=None,dropout=None)
+        
 ```
 
